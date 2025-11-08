@@ -44,11 +44,11 @@ const LoginForm = () => {
         },
     });
 
-    const onSubmit = (values: LoginFormType) => {
+    const onSubmit = async (values: LoginFormType) => {
         if (!auth) return;
         
         setIsLoading(true);
-        const success = auth.login(values.username, values.password);
+        const success = await auth.login(values.username, values.password);
         setIsLoading(false);
         
         if (!success) {

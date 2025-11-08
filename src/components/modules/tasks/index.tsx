@@ -18,7 +18,6 @@ import { toast } from "sonner";
 import { ITask } from "@/types";
 import { useContext } from "react";
 import { TaskContext } from "@/context/TasksContext";
-import { randomIdGenerator } from "@/utils/randomGenerators";
 import {
     Select,
     SelectContent,
@@ -50,21 +49,22 @@ const AddTask = () => {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const toastId = toast.loading("Adding Task...");
 
-        const task: ITask = {
-            id: randomIdGenerator(),
+        const task: Omit<ITask, "id"> = {
             title: values.title.trim(),
             status: "Pending",
             priority: values.priority,
         };
 
-        manager?.addTask(task);
-
-        toast.success("Task added successfully! 🎉", { id: toastId });
-
-        form.reset();
+        try {
+            await manager?.addTask(task as ITask);
+            toast.success("Task added successfully! 🎉", { id: toastId });
+            form.reset();
+        } catch (error) {
+            toast.error("Failed to add task", { id: toastId });
+        }
     };
 
     return (

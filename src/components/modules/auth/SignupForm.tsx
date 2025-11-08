@@ -51,11 +51,11 @@ const SignupForm = () => {
         },
     });
 
-    const onSubmit = (values: SignupFormType) => {
+    const onSubmit = async (values: SignupFormType) => {
         if (!auth) return;
         
         setIsLoading(true);
-        const success = auth.signup(values.username, values.email, values.password);
+        const success = await auth.signup(values.username, values.email, values.password);
         setIsLoading(false);
         
         if (!success) {

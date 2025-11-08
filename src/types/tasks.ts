@@ -7,13 +7,13 @@ export interface ITask {
 
 export interface ITasksContext {
     tasks: ITask[] | [] | null;
-    addTask: (payload: ITask) => void;
-    deleteTask: (id: string) => void;
-    updateTaskStatus: (id: string, status: "Pending" | "Completed") => void;
+    addTask: (payload: ITask | Omit<ITask, "id">) => Promise<void>;
+    deleteTask: (id: string) => Promise<void>;
+    updateTaskStatus: (id: string, status: "Pending" | "Completed") => Promise<void>;
     updateTaskPriority: (
         id: string,
         priority: "Low" | "Medium" | "High"
-    ) => void;
-    editTask: (id: string, payload: Partial<ITask>) => void;
+    ) => Promise<void>;
+    editTask: (id: string, payload: Partial<ITask>) => Promise<void>;
     sortTasks: (dir: "desc" | "asc") => void;
 }
